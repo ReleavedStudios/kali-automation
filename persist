@@ -1,0 +1,18 @@
+ #!/bin/bash   
+if [ "$1" = "" ]; 
+then
+	base64 -d <<<"H4sICNQTc1sAA3BlcnNpc3QudHh0AK2Syw3EMAhE767CHdAQEv13sUsMg8dhDyuZQ8RnlMfHZqK7
+2VWbYWOaOkfSLpOACU6k9V9Or68sMMEpk5LmHr++UISa7+FI0RkMmHNvRcEa9UeUBE5pCFcEzOx2
+RS1BoPEfmgff7Rkp7W1hOo56QzUfCzD6zuFHtLLiATDtPA/oaLobNkuveSR9YGbe8gTVwVjQlChV
+GvfG+ADpAUYCoAMAAA==" | gunzip
+	echo "use: sudo persist [persistence vol]"
+	echo "to find persistence vol use fdisk -l"
+	printf "\033[0;31m WARNING: this will reboot system \033[0m"
+	echo ""
+else
+	echo "setting up persistence volume $1"
+	sudo mkdir -p /mnt/UUI
+	sudo mount $1 /mnt/UUI
+	sudo echo "/ union" >/mnt/UUI/persistence.conf
+	umount $1 && reboot
+fi
